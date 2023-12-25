@@ -23,7 +23,7 @@ services:
     depends_on:
       - mongo
     environment:
-      - MONGODB_URI=mongodb+srv://Umair_Malik:M%40liks321@cluster0.wsivisg.mongodb.net/your-database-name  
+      - MONGODB_URI="your-mongo-db-url" 
 
   mongo:
     image: mongo
