@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  client:
+    image: malikumair096/mern-todo-list-client
+    ports:
+      - "80:3000"  # Map port 80 on the host to port 3000 in the container
+    depends_on:
+      - server
+    networks:
+      - app-network
+    volumes:
+      - frontend-data:/app/client/build
+
+  server:
+    image: malikumair096/mern-todo-list-server
+    ports:
+      - "5000:5000"
+    networks:
+      - app-network
+    volumes:
+      - backend-data:/app/server/data
+    depends_on:
+      - mongo
+    environment:
+      - MONGODB_URI=mongodb+srv://Umair_Malik:M%40liks321@cluster0.wsivisg.mongodb.net/your-database-name  
+
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+    volumes:
+      - mongodb-data:/data/db  # MongoDB data directory
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  frontend-data:
+  backend-data:
+  mongodb-data:

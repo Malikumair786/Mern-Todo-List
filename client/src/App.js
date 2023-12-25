@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import './App.css'
-import Head from './todoComponent/Head';
-import DataAdder from './todoComponent/DataAdder';
-import ShowData from './todoComponent/ShowData';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import "./App.css";
+import Head from "./todoComponent/Head";
+import DataAdder from "./todoComponent/DataAdder";
+import ShowData from "./todoComponent/ShowData";
+import axios from "axios";
 
 const App = () => {
-  const host = 'https://mern-todo-list-backend.onrender.com';
-  const [item, setItem] = useState({ data: '' });
+  // const host = 'https://mern-todo-list-backend.onrender.com';
+  const host = "http://localhost:5000";
+  const [item, setItem] = useState({ data: "" });
   const [addData, setAddData] = useState([]);
   const [holderText, setHolderText] = useState("Add Item");
   const [deleted, setDeleted] = useState(false);
@@ -18,7 +19,6 @@ const App = () => {
       .then((res) => {
         setAddData(res.data);
         setDeleted(false);
-
       })
       .catch((err) => {
         console.log(err);
@@ -30,7 +30,7 @@ const App = () => {
       axios
         .post(`${host}/api/data`, item)
         .then((res) => {
-          setItem({ data: '' });
+          setItem({ data: "" });
           setHolderText("Add Item");
           console.log(res.data.message);
         })
@@ -41,12 +41,12 @@ const App = () => {
     } else {
       setHolderText("Can't Empty");
     }
-  }
+  };
 
   const deleteItem = (id) => {
     axios.delete(`${host}/api/data/${id}`);
     setDeleted(true);
-  }
+  };
 
   return (
     <>
@@ -54,19 +54,24 @@ const App = () => {
         <div className="center_container">
           <Head />
           <div className="body">
-            <DataAdder item={item} setItem={setItem} click={addItem} placeholderText={holderText} />
+            <DataAdder
+              item={item}
+              setItem={setItem}
+              click={addItem}
+              placeholderText={holderText}
+            />
             <ol className="lists">
-              {
-                addData.map((item) => {
-                  return <ShowData key={item._id} item={item} onSelect={deleteItem} />
-                })
-              }
+              {addData.map((item) => {
+                return (
+                  <ShowData key={item._id} item={item} onSelect={deleteItem} />
+                );
+              })}
             </ol>
           </div>
         </div>
       </div>
     </>
   );
-}
+};
 
 export default App;
