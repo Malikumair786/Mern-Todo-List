@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    checkout scm
+                }
+            }
+        }
+
+        stage('Build and Deploy') {
+            steps {
+                script {
+                    // Build and deploy your web application here
+                    sh 'docker-compose up -d'
+                }
+            }
+        }
+
+        stage('Run Selenium Tests') {
+            steps {
+                script {
+                    // Install npm dependencies for Selenium tests
+                    sh 'npm install'
+
+                    // Run Selenium tests
+                    sh 'npm test'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                // Clean up, if needed
+                sh 'docker-compose down'
+            }
+        }
+    }
+}
